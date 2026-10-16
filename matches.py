@@ -18,6 +18,9 @@ def get_matches_id(puuid):
 
 def get_matches(puuid):
 
+    wins = 0
+    losses = 0
+
     match_ids = get_matches_id(puuid)
 
     for matchId in match_ids[:5]:
@@ -29,15 +32,23 @@ def get_matches(puuid):
         # print("Status code:", response.status_code)
         # print("Response:", response.text[:500])
 
-        # response.raise_for_status()
+        response.raise_for_status()
 
         match = response.json()
 
         for participant in match["info"]["participants"]:
             if participant["puuid"] == puuid:
                 if participant["win"]:
+                    wins += 1
                     print ("Won")
                 else:
+                    losses += 1
                     print ("Lost")
+
+    total = wins + losses
+    winrate = wins / total * 100
+
+    print(f"\nWinrate over those games is {winrate}%")
+        
 
 

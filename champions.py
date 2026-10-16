@@ -21,4 +21,3 @@ def get_champion_names():
 
     return champion_names
 
-    

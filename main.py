@@ -23,7 +23,7 @@ def most_played_champions(puuid):
     response = requests.get(url, headers=headers, timeout=10)
 
     data_champ_mastery = response.json()
-    
+
     print(f"Top 3 most played champions are:\n1.{champion_names[data_champ_mastery[0]["championId"]]} - Points: {data_champ_mastery[0]["championPoints"]}\n2.{champion_names[data_champ_mastery[1]["championId"]]} - Points: {data_champ_mastery[1]["championPoints"]}\n3.{champion_names[data_champ_mastery[2]["championId"]]} - Points: {data_champ_mastery[2]["championPoints"]} ")
 
 def main():
