@@ -14,16 +14,17 @@ def get_matches_id(puuid):
     url = f"https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids"
     response = requests.get(url, headers=headers, timeout=10)
 
+    # print("Match IDs:", response.text[:500])
+
     return response.json()
 
 def get_matches(puuid):
 
-    wins = 0
-    losses = 0
-
     match_ids = get_matches_id(puuid)
 
-    for matchId in match_ids[:5]:
+    matches = []
+
+    for matchId in match_ids[:10]:
 
         url = f"https://europe.api.riotgames.com/lol/match/v5/matches/{matchId}"
 
@@ -36,19 +37,35 @@ def get_matches(puuid):
 
         match = response.json()
 
+        matches.append(match)
+
+    return matches
+
+def calculate_winrate(matches, puuid):
+
+    wins = 0
+    losses = 0
+
+    for match in matches[:10]:
         for participant in match["info"]["participants"]:
             if participant["puuid"] == puuid:
-                if participant["win"]:
-                    wins += 1
-                    print ("Won")
-                else:
-                    losses += 1
-                    print ("Lost")
+                break
+
+        if participant["win"]:
+            wins += 1
+            print ("Won")
+        else:
+            losses += 1
+            print ("Lost")
 
     total = wins + losses
-    winrate = wins / total * 100
+    
+    if total != 0:
+        winrate = wins / total * 100
+    else: 
+        winrate = 0
 
-    print(f"\nWinrate over those games is {winrate}%")
+    print(f"\nWinrate over played games is {winrate}%")
         
 
 

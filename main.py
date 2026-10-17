@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import requests
 
 from champions import get_champion_names
-from matches import get_matches
+from matches import get_matches, calculate_winrate
 from player import get_player
 
 load_dotenv() # reads variables from a .env file and sets them in os.environ
@@ -30,7 +30,9 @@ def main():
 
     # most_played_champions(puuid)
 
-    get_matches(puuid)
+    matches = get_matches(puuid)
+
+    calculate_winrate(matches, puuid)
 
 
 if __name__ == "__main__":
