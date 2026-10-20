@@ -25,10 +25,6 @@ def get_riot_id():
         if not game_name or not tag_line:
             print(f"\n\"{riotID}\" is not a valid Riot ID")
             continue
-        
-        riot_id_split = riotID.split('#', 1)
-        game_name = riot_id_split[0]
-        tag_line = riot_id_split[1]
 
         return game_name, tag_line
 

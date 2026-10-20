@@ -2,16 +2,11 @@ import os
 from dotenv import load_dotenv
 import requests
 
+from config import HEADERS
+
 from champions import get_champion_names
 from matches import get_matches, calculate_winrate
 from player import get_riot_id, get_puuid
-
-load_dotenv() # reads variables from a .env file and sets them in os.environ
-API_KEY = os.getenv("API_KEY")
-
-headers = {
-    "X-Riot-Token": API_KEY
-}
 
 champion_names = get_champion_names()
 
