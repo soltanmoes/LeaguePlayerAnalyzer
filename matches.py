@@ -1,20 +1,13 @@
-import os
-from dotenv import load_dotenv
 import requests
 
 from config import HEADERS
 
-load_dotenv() # reads variables from a .env file and sets them in os.environ
-API_KEY = os.getenv("API_KEY")
-
-headers = {
-    "X-Riot-Token": API_KEY
-}
-
 def get_matches_id(puuid):
 
     url = f"https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids"
-    response = requests.get(url, headers=headers, timeout=10)
+    response = requests.get(url, headers=HEADERS, timeout=10)
+
+    response.raise_for_status()
 
     # print("Match IDs:", response.text[:500])
 
@@ -30,7 +23,7 @@ def get_matches(puuid):
 
         url = f"https://europe.api.riotgames.com/lol/match/v5/matches/{matchId}"
 
-        response = requests.get(url, headers=headers, timeout=10)
+        response = requests.get(url, headers=HEADERS, timeout=10)
 
         # print("Status code:", response.status_code)
         # print("Response:", response.text[:500])
@@ -43,30 +36,19 @@ def get_matches(puuid):
 
     return matches
 
-def calculate_winrate(matches, puuid):
+def get_player_participants(matches, puuid):
 
-    wins = 0
-    losses = 0
-
-    for match in matches[:10]:
+    participant_list = []
+    
+    for match in matches:
         for participant in match["info"]["participants"]:
             if participant["puuid"] == puuid:
-                
-                if participant["win"]:
-                    wins += 1
-                else:
-                    losses += 1
+
+                participant_list.append(participant)
                 
                 break
 
-    total = wins + losses
-    
-    if total != 0:
-        winrate = wins / total * 100
-    else: 
-        winrate = 0
+    return participant_list
 
-    return winrate
-        
 
 

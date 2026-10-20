@@ -1,13 +1,6 @@
-import os
-from dotenv import load_dotenv
 import requests
 
-load_dotenv() # reads variables from a .env file and sets them in os.environ
-API_KEY = os.getenv("API_KEY")
-
-headers = {
-    "X-Riot-Token": API_KEY
-}
+from config import HEADERS
 
 def get_riot_id():
 
@@ -32,7 +25,7 @@ def get_riot_id():
 def get_puuid(game_name, tag_line):
 
     url = f"https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{game_name}/{tag_line}"
-    response = requests.get(url, headers=headers, timeout=10)
+    response = requests.get(url, headers=HEADERS, timeout=10)
 
     response.raise_for_status()
 
