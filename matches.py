@@ -49,14 +49,13 @@ def calculate_winrate(matches, puuid):
     for match in matches[:10]:
         for participant in match["info"]["participants"]:
             if participant["puuid"] == puuid:
+                
+                if participant["win"]:
+                    wins += 1
+                else:
+                    losses += 1
+                
                 break
-
-        if participant["win"]:
-            wins += 1
-            print ("Won")
-        else:
-            losses += 1
-            print ("Lost")
 
     total = wins + losses
     
@@ -65,7 +64,7 @@ def calculate_winrate(matches, puuid):
     else: 
         winrate = 0
 
-    print(f"\nWinrate over played games is {winrate}%")
+    return winrate
         
 
 

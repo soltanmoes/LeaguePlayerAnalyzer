@@ -32,7 +32,9 @@ def main():
 
     matches = get_matches(puuid)
 
-    calculate_winrate(matches, puuid)
+    winrate = calculate_winrate(matches, puuid)
+
+    print(f"Winrate over last 20 games is {winrate}%")
 
 
 if __name__ == "__main__":
