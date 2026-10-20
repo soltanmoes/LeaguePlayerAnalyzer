@@ -4,7 +4,7 @@ import requests
 
 from champions import get_champion_names
 from matches import get_matches, calculate_winrate
-from player import get_player
+from player import get_riot_id, get_puuid
 
 load_dotenv() # reads variables from a .env file and sets them in os.environ
 API_KEY = os.getenv("API_KEY")
@@ -14,8 +14,6 @@ headers = {
 }
 
 champion_names = get_champion_names()
-
-puuid = get_player()
 
 def most_played_champions(puuid):
 
@@ -30,11 +28,15 @@ def main():
 
     # most_played_champions(puuid)
 
+    game_name, tag_line = get_riot_id()
+
+    puuid = get_puuid(game_name, tag_line)
+
     matches = get_matches(puuid)
 
     winrate = calculate_winrate(matches, puuid)
 
-    print(f"Winrate over last 20 games is {winrate}%")
+    print(f"Winrate over last 10 games is {winrate}%")
 
 
 if __name__ == "__main__":
