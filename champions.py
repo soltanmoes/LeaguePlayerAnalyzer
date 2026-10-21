@@ -20,3 +20,13 @@ def get_champion_names():
 
     return champion_names
 
+def get_champion_mastery(puuid):
+
+    url = f"https://euw1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/{puuid}"
+    response = requests.get(url, headers=HEADERS, timeout=10)
+
+    response.raise_for_status()
+
+    data_champ_mastery = response.json()
+
+    return data_champ_mastery

@@ -1,19 +1,5 @@
 #Calculate win rate, KDA, and performance statistics
 
-import requests
-from config import HEADERS
-
-def get_champion_mastery(puuid):
-
-    url = f"https://euw1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/{puuid}"
-    response = requests.get(url, headers=HEADERS, timeout=10)
-
-    response.raise_for_status()
-
-    data_champ_mastery = response.json()
-
-    return data_champ_mastery
-
 def calculate_win_rate(participant_list):
 
     wins = 0
@@ -31,7 +17,28 @@ def calculate_win_rate(participant_list):
     if total != 0:
         winrate = wins / total * 100
     else: 
-        winrate = 0
+        return None
 
     return winrate
-        
+
+def calculate_match_kda(participant_list):
+
+    kda_list = []
+    
+    for participant in participant_list:
+
+        kda_list.append( (participant["kills"] + participant["assists"]) / max(1, participant["deaths"]) )
+
+    return kda_list
+
+def calculate_overall_kda(participant_list):
+
+    kills, deaths, assists = 0, 0, 0
+    
+    for participant in participant_list:
+
+        kills += participant["kills"]
+        assists += participant["assists"]
+        deaths +=  participant["deaths"]
+
+    return (kills + assists) / max(1, deaths)
