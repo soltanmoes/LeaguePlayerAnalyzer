@@ -49,7 +49,7 @@ def calculate_overall_kda(participants):
 
     return (kills + assists) / max(1, deaths)
 
-def group_by_champ(participants):
+def group_by_champion(participants):
 
     grouped_matches = {}
 
@@ -57,7 +57,5 @@ def group_by_champ(participants):
         if participant["championName"] not in grouped_matches:
             grouped_matches[participant["championName"]] = []
         grouped_matches[participant["championName"]].append(participant)
-
-    print(grouped_matches)
 
     return grouped_matches
