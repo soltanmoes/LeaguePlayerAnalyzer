@@ -38,17 +38,17 @@ def get_matches(puuid):
 
 def get_player_participants(matches, puuid):
 
-    participant_list = []
+    participants = []
     
     for match in matches:
         for participant in match["info"]["participants"]:
             if participant["puuid"] == puuid:
 
-                participant_list.append(participant)
+                participants.append(participant)
                 
                 break
 
-    return participant_list
+    return participants
 
 
 

@@ -1,4 +1,5 @@
 import requests
+from config import HEADERS
 
 def get_champion_names():
 
