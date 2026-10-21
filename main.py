@@ -18,19 +18,7 @@ def main():
         print("No recent matches found.\n")
     else:
         print(f"Winrate over last 10 games is {winrate}%\n")
-
-
-    # test_participants = [
-    # {"win": True},
-    # {"win": False},
-    # {"win": True},
-    # {"win": False},
-    # {"win": True}
-    # ]
-
-    # winrate = calculate_win_rate(test_participants)
-
-    # print(f"{winrate}%")
+        
 
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-from analysis import calculate_win_rate, calculate_match_kda, calculate_overall_kda
+from analysis import calculate_win_rate, calculate_match_kda, calculate_overall_kda, group_by_champ
 import pytest
 
 def test_win_rate():
@@ -57,3 +57,20 @@ def test_zero_deaths_overall_kda():
     ]
 
     assert calculate_overall_kda(participants) == 15.0
+
+def test_group_by_champ():
+    participants = [
+        {"championName": "Ahri", "win": True, "kills": 10, "deaths": 2, "assists": 5},
+        {"championName": "Ahri", "win": True, "kills": 7, "deaths": 3, "assists": 9},
+        {"championName": "Yasuo", "win": False, "kills": 4, "deaths": 8, "assists": 3}
+    ]
+
+    assert group_by_champ(participants) == { 
+        "Ahri": [
+            {"championName": "Ahri", "win": True, "kills": 10, "deaths": 2, "assists": 5},
+            {"championName": "Ahri", "win": True, "kills": 7, "deaths": 3, "assists": 9}
+        ],
+        "Yasuo": [
+            {"championName": "Yasuo", "win": False, "kills": 4, "deaths": 8, "assists": 3}
+        ]
+    }
