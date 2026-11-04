@@ -2,7 +2,7 @@ import requests
 
 from config import HEADERS
 
-def get_matches_id(puuid):
+def fetch_match_ids(puuid):
 
     url = f"https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids"
     response = requests.get(url, headers=HEADERS, timeout=10)
@@ -15,7 +15,7 @@ def get_matches_id(puuid):
 
 def get_matches(puuid):
 
-    match_ids = get_matches_id(puuid)
+    match_ids = fetch_match_ids(puuid)
 
     matches = []
 

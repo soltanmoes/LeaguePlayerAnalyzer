@@ -1,5 +1,5 @@
 import sqlite3
-from matches import get_matches_id
+from matches import fetch_match_ids
 
 connection = sqlite3.connect('league_analyzer.db')
 cursor = connection.cursor()
@@ -22,7 +22,7 @@ def save_matches(puuid, riot_id):
 
     cursor.execute("INSERT OR IGNORE INTO players VALUES (?, ?)", (puuid, riot_id))
     
-    match_ids = get_matches_id(puuid)
+    match_ids = fetch_match_ids(puuid)
 
     for match_id in match_ids:
         cursor.execute("INSERT OR IGNORE INTO matches VALUES (?, ?)", (puuid, match_id))
@@ -30,7 +30,7 @@ def save_matches(puuid, riot_id):
     connection.commit()
 
 
-def get_matches(puuid):
+def get_stored_match_ids(puuid):
 
     cursor.execute("SELECT match_id FROM matches WHERE puuid = (?)", (puuid,))
 
