@@ -1,13 +1,11 @@
 import sqlite3
 from matches import fetch_match_ids
 
-connection = sqlite3.connect('league_analyzer.db')
-cursor = connection.cursor()
-
-
-
 def create_database():
 
+    connection = sqlite3.connect('league_analyzer.db')
+    cursor = connection.cursor()
+    
     player_table = "CREATE TABLE IF NOT EXISTS players(puuid TEXT PRIMARY KEY, riot_id TEXT)"
 
     cursor.execute(player_table)
@@ -16,9 +14,13 @@ def create_database():
 
     cursor.execute(matches_table)
 
+    connection.commit()
+    connection.close()
 
+def save_matches(puuid, riot_id, match_ids):
 
-def save_matches(puuid, riot_id):
+    connection = sqlite3.connect('league_analyzer.db')
+    cursor = connection.cursor()
 
     cursor.execute("INSERT OR IGNORE INTO players VALUES (?, ?)", (puuid, riot_id))
     
@@ -28,13 +30,22 @@ def save_matches(puuid, riot_id):
         cursor.execute("INSERT OR IGNORE INTO matches VALUES (?, ?)", (puuid, match_id))
 
     connection.commit()
-
+    connection.close()
 
 def get_stored_match_ids(puuid):
 
-    cursor.execute("SELECT match_id FROM matches WHERE puuid = (?)", (puuid,))
+    
+    connection = sqlite3.connect('league_analyzer.db')
+    cursor = connection.cursor()
+
+    # cursor.execute("SELECT match_id FROM matches WHERE puuid = (?)", (puuid,))
 
     results = cursor.fetchall()
 
     print(results)
+
+    connection.commit()
+    connection.close()
+
+
 

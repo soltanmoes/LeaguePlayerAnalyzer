@@ -1,5 +1,5 @@
 from analysis import calculate_win_rate
-from matches import get_matches, get_player_participants
+from matches import get_matches, fetch_match_ids, get_player_participants
 from player import get_riot_id, get_puuid
 from database import create_database, save_matches, get_stored_match_ids
 
@@ -24,7 +24,9 @@ def main():
 
     create_database()
 
-    save_matches(puuid, riot_id)
+    match_ids = fetch_match_ids(puuid)
+
+    save_matches(puuid, riot_id, match_ids)
 
     get_stored_match_ids(puuid)
 
