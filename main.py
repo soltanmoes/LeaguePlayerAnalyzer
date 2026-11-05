@@ -28,7 +28,9 @@ def main():
 
     save_matches(puuid, riot_id, match_ids)
 
-    get_stored_match_ids(puuid)
+    match_ids = get_stored_match_ids(puuid)
+
+    print(match_ids)
 
 
 

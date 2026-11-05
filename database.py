@@ -17,6 +17,7 @@ def create_database():
     connection.commit()
     connection.close()
 
+
 def save_matches(puuid, riot_id, match_ids):
 
     connection = sqlite3.connect('league_analyzer.db')
@@ -30,20 +31,22 @@ def save_matches(puuid, riot_id, match_ids):
     connection.commit()
     connection.close()
 
+
 def get_stored_match_ids(puuid):
 
-    
     connection = sqlite3.connect('league_analyzer.db')
     cursor = connection.cursor()
 
-    # cursor.execute("SELECT match_id FROM matches WHERE puuid = (?)", (puuid,))
+    cursor.execute("SELECT match_id FROM matches WHERE puuid = (?)", (puuid,))
 
     results = cursor.fetchall()
 
-    print(results)
+    stored_match_ids = [match_id[0] for match_id in results]
 
-    connection.commit()
     connection.close()
+    
+    return stored_match_ids
+
 
 
 
