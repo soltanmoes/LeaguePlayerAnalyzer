@@ -1,11 +1,11 @@
 #Calculate win rate, KDA, and performance statistics
 
-def calculate_win_rate(participants):
+def calculate_win_rate(participant_list):
 
     wins = 0
     losses = 0
 
-    for participant in participants:
+    for participant in participant_list:
         
         if participant["win"]:
             wins += 1
@@ -21,27 +21,27 @@ def calculate_win_rate(participants):
 
     return winrate
 
-def calculate_match_kda(participants):
+def calculate_match_kda(participant_list):
     
-    if not participants:
+    if not participant_list:
         return None
 
     kda_list = []
     
-    for participant in participants:
+    for participant in participant_list:
 
         kda_list.append( (participant["kills"] + participant["assists"]) / max(1, participant["deaths"]) )
 
     return kda_list
 
-def calculate_overall_kda(participants):
+def calculate_overall_kda(participant_list):
 
-    if not participants:
+    if not participant_list:
         return None
     
     kills, deaths, assists = 0, 0, 0
     
-    for participant in participants:
+    for participant in participant_list:
 
         kills += participant["kills"]
         assists += participant["assists"]
@@ -49,11 +49,11 @@ def calculate_overall_kda(participants):
 
     return (kills + assists) / max(1, deaths)
 
-def group_by_champion(participants):
+def group_by_champion(participant_list):
 
     grouped_matches = {}
 
-    for participant in participants:
+    for participant in participant_list:
         if participant["championName"] not in grouped_matches:
             grouped_matches[participant["championName"]] = []
         grouped_matches[participant["championName"]].append(participant)

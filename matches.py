@@ -8,8 +8,8 @@ def fetch_match_ids(puuid):
     response = requests.get(url, headers=HEADERS, timeout=10)
 
     response.raise_for_status()
-
-    # print("Match IDs:", response.text[:500])
+    
+    print("Checking match history...\n")
 
     return response.json()
 
@@ -19,7 +19,7 @@ def get_matches(puuid):
 
     matches = []
 
-    for matchId in match_ids[:10]:
+    for matchId in match_ids:
 
         url = f"https://europe.api.riotgames.com/lol/match/v5/matches/{matchId}"
 
@@ -36,7 +36,7 @@ def get_matches(puuid):
 
     return matches
 
-def get_player_participants(matches, puuid):
+def get_player_in_participants(matches, puuid):
 
     participants = []
     
