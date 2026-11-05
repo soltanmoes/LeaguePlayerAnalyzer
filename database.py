@@ -23,8 +23,6 @@ def save_matches(puuid, riot_id, match_ids):
     cursor = connection.cursor()
 
     cursor.execute("INSERT OR IGNORE INTO players VALUES (?, ?)", (puuid, riot_id))
-    
-    match_ids = fetch_match_ids(puuid)
 
     for match_id in match_ids:
         cursor.execute("INSERT OR IGNORE INTO matches VALUES (?, ?)", (puuid, match_id))
