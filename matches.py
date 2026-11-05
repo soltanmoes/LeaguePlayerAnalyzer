@@ -13,9 +13,7 @@ def fetch_match_ids(puuid):
 
     return response.json()
 
-def get_matches(puuid):
-
-    match_ids = fetch_match_ids(puuid)
+def get_matches(match_ids):
 
     matches = []
 
@@ -38,17 +36,17 @@ def get_matches(puuid):
 
 def get_player_in_participants(matches, puuid):
 
-    participants = []
+    participant_list = []
     
     for match in matches:
         for participant in match["info"]["participants"]:
             if participant["puuid"] == puuid:
 
-                participants.append(participant)
+                participant_list.append(participant)
                 
                 break
 
-    return participants
+    return participant_list
 
 
 
