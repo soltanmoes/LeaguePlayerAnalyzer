@@ -3,6 +3,14 @@ from matches import get_matches, fetch_match_ids, get_player_participants
 from player import get_riot_id, get_puuid
 from database import create_database, save_matches, get_stored_match_ids
 
+
+def get_new_match_ids(api_match_ids, stored_match_ids):
+
+    return list((set(api_match_ids)&set(stored_match_ids))^set(api_match_ids))
+
+
+
+
 def main():
 
     game_name, tag_line = get_riot_id()
@@ -24,13 +32,19 @@ def main():
 
     create_database()
 
-    match_ids = fetch_match_ids(puuid)
+    api_match_ids = fetch_match_ids(puuid)
 
-    save_matches(puuid, riot_id, match_ids)
+    # save_matches(puuid, riot_id, match_ids)
 
-    match_ids = get_stored_match_ids(puuid)
+    stored_match_ids = get_stored_match_ids(puuid)
 
-    print(match_ids)
+    new_match_ids = get_new_match_ids(api_match_ids, stored_match_ids)
+
+    print(f"api_matches: {api_match_ids}")
+    
+    print(f"stored_matches: {stored_match_ids}")
+    
+    print(f"unsaved_matches: {new_match_ids}")
 
 
 
