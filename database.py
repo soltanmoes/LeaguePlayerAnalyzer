@@ -1,9 +1,18 @@
 import sqlite3
 from matches import fetch_match_ids
 
-def create_database():
+def get_connection():
 
     connection = sqlite3.connect('league_analyzer.db')
+    connection.execute("PRAGMA foreign_keys = on")
+
+    return connection
+
+
+def create_database():
+
+    connection = get_connection()
+
     cursor = connection.cursor()
     
     player_table = "CREATE TABLE IF NOT EXISTS players(puuid TEXT PRIMARY KEY, riot_id TEXT)"
@@ -14,13 +23,18 @@ def create_database():
 
     cursor.execute(matches_table)
 
+    
+    participants_table = "CREATE TABLE IF NOT EXISTS participants(puuid TEXT, match_id TEXT, details TEXT, (puuid, match_id), FOREIGN KEY(puuid) REFERENCES players(puuid), FOREIGN KEY(puuid, match_id) REFERENCES matches(puuid, match_id))"
+
+    cursor.execute(participants_table)
+
     connection.commit()
     connection.close()
 
 
 def save_matches(puuid, riot_id, match_ids):
 
-    connection = sqlite3.connect('league_analyzer.db')
+    connection = get_connection()
     cursor = connection.cursor()
 
     cursor.execute("INSERT OR IGNORE INTO players VALUES (?, ?)", (puuid, riot_id))
@@ -31,10 +45,21 @@ def save_matches(puuid, riot_id, match_ids):
     connection.commit()
     connection.close()
 
+# Champ: Ahri , Kills: 1 , Deaths: 10 , Assists: 3
+def save_participants(puuid, match_ids, response):
+
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    for match_id in match_ids:
+        cursor.execute("INSERT OR IGNORE INTO participants ((puuid, match_id), details) VALUES", (puuid, match_id, response))
+
+    connection.commit()
+    connection.close()
 
 def get_stored_match_ids(puuid):
 
-    connection = sqlite3.connect('league_analyzer.db')
+    connection = get_connection()
     cursor = connection.cursor()
 
     cursor.execute("SELECT match_id FROM matches WHERE puuid = (?)", (puuid,))

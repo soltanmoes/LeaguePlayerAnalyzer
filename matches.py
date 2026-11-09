@@ -13,6 +13,7 @@ def fetch_match_ids(puuid):
 
     return response.json()
 
+
 def get_matches(match_ids):
 
     matches = []
@@ -33,6 +34,7 @@ def get_matches(match_ids):
         matches.append(match)
 
     return matches
+
 
 def get_player_in_participants(matches, puuid):
 
