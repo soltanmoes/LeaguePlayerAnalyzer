@@ -36,14 +36,13 @@ def get_matches(match_ids):
     return matches
 
 
-def get_player_in_participants(matches, puuid):
+def get_player_in_participants(puuid, matches):
 
     participant_list = []
     
     for match in matches:
         for participant in match["info"]["participants"]:
             if participant["puuid"] == puuid:
-
                 participant_list.append(participant)
                 
                 break

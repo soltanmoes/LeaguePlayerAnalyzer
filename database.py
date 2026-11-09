@@ -24,7 +24,7 @@ def create_database():
     cursor.execute(matches_table)
 
     
-    participants_table = "CREATE TABLE IF NOT EXISTS participants(puuid TEXT, match_id TEXT, details TEXT, (puuid, match_id), FOREIGN KEY(puuid) REFERENCES players(puuid), FOREIGN KEY(puuid, match_id) REFERENCES matches(puuid, match_id))"
+    participants_table = "CREATE TABLE IF NOT EXISTS participants(puuid TEXT, match_id TEXT, details TEXT, PRIMARY KEY (puuid, match_id), FOREIGN KEY(puuid) REFERENCES players(puuid), FOREIGN KEY(puuid, match_id) REFERENCES matches(puuid, match_id))"
 
     cursor.execute(participants_table)
 
@@ -46,13 +46,12 @@ def save_matches(puuid, riot_id, match_ids):
     connection.close()
 
 # Champ: Ahri , Kills: 1 , Deaths: 10 , Assists: 3
-def save_participants(puuid, match_ids, response):
+def save_participants(puuid, match_id, participant):
 
     connection = get_connection()
     cursor = connection.cursor()
 
-    for match_id in match_ids:
-        cursor.execute("INSERT OR IGNORE INTO participants ((puuid, match_id), details) VALUES", (puuid, match_id, response))
+    cursor.execute("INSERT OR IGNORE INTO participants (puuid, match_id, details) VALUES (?, ?, ?)", (puuid, match_id, participant))
 
     connection.commit()
     connection.close()
@@ -72,5 +71,17 @@ def get_stored_match_ids(puuid):
     
     return stored_match_ids
 
+def get_stored_participants(puuid):
 
+
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT * FROM participants WHERE puuid = (?)", (puuid,))
+
+    results = cursor.fetchall()
+
+    connection.close()
+    
+    return results
 
