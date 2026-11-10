@@ -50,11 +50,13 @@ def main():
     #for key in grouped_champions[index]:
         #print(grouped_champions[index][key])
 
-    for grouped_champ in grouped_champions:
-        winrate = calculate_win_rate(grouped_champ[1])
-        overall_kda = calculate_overall_kda(grouped_champ[1])
-        games_count = str(len(grouped_champ[1]))
-        print(f"{grouped_champ[0]:10s} | {games_count:3s} games | {winrate:.1f}% WR | {overall_kda:.2f} KDA")
+    for key, value in grouped_champions.items():
+        winrate = calculate_win_rate(value)
+        overall_kda = calculate_overall_kda(value)
+        games_count = str(len(value))
+
+        wr_text = f"{winrate:.1f}% WR"
+        print(f"{key:10s} | {games_count:5s} games | {wr_text:10s} | {overall_kda:.2f} KDA")
 
 
     print("\nMatch history (last 20 games):")

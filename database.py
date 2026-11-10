@@ -148,6 +148,8 @@ def get_player_champ(puuid, match_id):
     results = cursor.fetchall()
 
     connection.close()
+
+    print(f"Results: {results}")
     
     return results[0][0]
 
