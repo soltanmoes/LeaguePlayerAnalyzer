@@ -33,7 +33,7 @@ def create_database():
     connection.close()
 
 
-def save_matches(puuid, riot_id, match_ids):
+def save_match_ids(puuid, riot_id, match_ids):
 
     connection = get_connection()
     cursor = connection.cursor()
@@ -52,7 +52,7 @@ def save_participants(puuid, match_id, details):
     connection = get_connection()
     cursor = connection.cursor()
 
-    cursor.execute("INSERT OR IGNORE INTO participants (puuid, match_id, details) VALUES (?, ?, ?)", (puuid, match_id, details))
+    cursor.execute("INSERT INTO participants (puuid, match_id, details) VALUES (?, ?, ?)", (puuid, match_id, details))
 
     connection.commit()
     connection.close()
@@ -148,18 +148,30 @@ def get_player_champ(puuid, match_id):
     results = cursor.fetchall()
 
     connection.close()
-
-    print(f"Results: {results}")
     
     return results[0][0]
 
 
-def drop_participants_table():
+def drop_all_tables():
 
     connection = get_connection()
     cursor = connection.cursor()
 
+    cursor.execute("DROP TABLE IF EXISTS matches")
+    cursor.execute("DROP TABLE IF EXISTS players")
     cursor.execute("DROP TABLE IF EXISTS participants")
+
+    connection.commit()
+    connection.close()
+
+
+def delete_from_participants_table(puuid):
+
+
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("DELETE FROM participants WHERE puuid = (?)", (puuid,))
 
     connection.commit()
     connection.close()

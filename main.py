@@ -11,6 +11,8 @@ def get_new_match_ids(api_match_ids, stored_match_ids):
 
 def main():
 
+    # drop_all_tables()
+
     game_name, tag_line = get_riot_id()
     riot_id = game_name + tag_line
     puuid = get_puuid(game_name, tag_line) # asks for riotId and extracts puuid
@@ -18,28 +20,28 @@ def main():
     create_database() # creates table if it doesn't already exist
 
     api_match_ids = fetch_match_ids(puuid)
-    print(f"{len(api_match_ids)} matches found")
+    print(f"{len(api_match_ids)} matches found") # fetches recent games using riot api
 
-    stored_match_ids = get_stored_match_ids(puuid)
-    print(f"{len(stored_match_ids)} matches already stored")
+    participant_list = get_stored_participants(puuid) 
+    print(f"{len(participant_list)} matches already stored")
 
-    new_match_ids = get_new_match_ids(api_match_ids, stored_match_ids)
-    save_matches(puuid, riot_id, new_match_ids)
+    stored_match_ids = get_stored_match_ids(puuid) # returns how many match ids are stored in database
+    new_match_ids = get_new_match_ids(api_match_ids, stored_match_ids) # using function to check which matches are not stored in database
+    save_match_ids(puuid, riot_id, new_match_ids) # only stores those match_ids
 
-    matches = get_matches(new_match_ids)
-    add_participants_to_table(puuid, matches)
+    matches = get_matches(new_match_ids) # only gets the match information from non-stored matches
+    add_participants_to_table(puuid, matches) # adds those matches to participants table
+    participant_list = get_stored_participants(puuid)
 
-    stored_match_ids = get_stored_match_ids(puuid)
-    
-    print(f"{len(new_match_ids)} new matches downloaded\n")
+    print(f"{len(participant_list)} new matches downloaded\n")
 
     print("==== PLAYER ANALYSIS ====")
 
-    participant_list = get_stored_participants(puuid)
 
     winrate = calculate_win_rate(participant_list)
     overall_kda = calculate_overall_kda(participant_list)
 
+    stored_match_ids = get_stored_match_ids(puuid) # reassigns correct amount of stored match ids
     print(f"Total matches analyzed: {len(stored_match_ids)}")
     print(f"Winrate: {winrate:.1f}%")
     print(f"Overall KDA: {overall_kda:.2f}")
