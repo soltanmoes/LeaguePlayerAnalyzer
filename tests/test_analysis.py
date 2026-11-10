@@ -1,5 +1,10 @@
-from analysis import calculate_win_rate, calculate_match_kda, calculate_overall_kda, group_by_champion
+import sys
+
+sys.path.insert(0, "../LeaguePlayerAnalyzer")
+
 import pytest
+from analysis import *
+
 
 def test_win_rate():
     participants = [

@@ -1,4 +1,4 @@
-from analysis import calculate_win_rate, calculate_overall_kda
+from analysis import calculate_win_rate, calculate_overall_kda, group_by_champion
 from matches import get_matches, fetch_match_ids
 from player import get_riot_id, get_puuid
 from database import *
@@ -44,6 +44,17 @@ def main():
     print(f"Winrate: {winrate:.1f}%")
     print(f"Overall KDA: {overall_kda:.2f}")
 
+    grouped_champions = group_by_champion(participant_list)
+    print(f"\nChampion performance:")
+
+    #for key in grouped_champions[index]:
+        #print(grouped_champions[index][key])
+
+    for grouped_champ in grouped_champions:
+        winrate = calculate_win_rate(grouped_champ[1])
+        overall_kda = calculate_overall_kda(grouped_champ[1])
+        games_count = str(len(grouped_champ[1]))
+        print(f"{grouped_champ[0]:10s} | {games_count:3s} games | {winrate:.1f}% WR | {overall_kda:.2f} KDA")
 
 
     print("\nMatch history (last 20 games):")

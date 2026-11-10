@@ -1,9 +1,11 @@
 #Calculate win rate, KDA, and performance statistics
+import json
 
 def calculate_win_rate(participant_list):
 
     wins = 0
     losses = 0
+
 
     for participant in participant_list:
         
@@ -52,11 +54,11 @@ def calculate_overall_kda(participant_list):
 
 def group_by_champion(participant_list):
 
-    grouped_matches = {}
+    grouped_champions = {}
 
     for participant in participant_list:
-        if participant["championName"] not in grouped_matches:
-            grouped_matches[participant["championName"]] = []
-        grouped_matches[participant["championName"]].append(participant)
+        if participant["championName"] not in grouped_champions:
+            grouped_champions[participant["championName"]] = []
+        grouped_champions[participant["championName"]].append(participant)
 
-    return grouped_matches
+    return grouped_champions
