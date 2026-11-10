@@ -3,6 +3,7 @@ from matches import get_matches, fetch_match_ids
 from player import get_riot_id, get_puuid
 from database import *
 from sync import add_participants_to_table
+import json
 
 def get_new_match_ids(api_match_ids, stored_match_ids):
 
@@ -33,23 +34,29 @@ def main():
     print(f"{len(new_match_ids)} new matches downloaded\n")
 
     print("==== PLAYER ANALYSIS ====")
-    
-    for match_id in stored_match_ids:
+
+    participant_list = get_stored_participants(puuid)
+
+    winrate = calculate_win_rate(participant_list)
+    overall_kda = calculate_overall_kda(participant_list)
+
+    print(f"Total matches analyzed: {len(stored_match_ids)}")
+    print(f"Winrate: {winrate:.1f}%")
+    print(f"Overall KDA: {overall_kda:.2f}")
+
+
+
+    print("\nMatch history (last 20 games):")
+    for match_id in stored_match_ids[:-21:-1]:
 
         champion = get_player_champ(puuid, match_id)
-        kills = get_player_kills(puuid, match_id)
-        assists = get_player_assists(puuid, match_id)
-        deaths = get_player_deaths(puuid, match_id)
-        print(f"Champion: {champion} Kills: {kills} Assists: {assists} Deaths: {deaths}")
+        kills = str(get_player_kills(puuid, match_id))
+        assists = str(get_player_assists(puuid, match_id))
+        deaths = str(get_player_deaths(puuid, match_id))
+        print(f"Champion: {champion:10s} | Kills: {kills:5s} | Deaths: {deaths:5s} | Assists: {assists:5s}")
 
 
     
-    # winrate = calculate_win_rate(participant_list)
-    # overall_kda = calculate_overall_kda(participant_list)
-
-    # print(f"Total matches analyzed: {len(stored_match_ids)}")
-    # print(f"Winrate: {winrate:.1f}%")
-    # print(f"Overall KDA: {overall_kda:.2f}")
 
 
 

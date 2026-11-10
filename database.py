@@ -1,4 +1,5 @@
 import sqlite3
+import json
 from matches import fetch_match_ids
 
 def get_connection():
@@ -45,7 +46,7 @@ def save_matches(puuid, riot_id, match_ids):
     connection.commit()
     connection.close()
 
-# Champ: Ahri , Kills: 1 , Deaths: 10 , Assists: 3
+
 def save_participants(puuid, match_id, details):
 
     connection = get_connection()
@@ -79,13 +80,20 @@ def get_stored_participants(puuid):
     connection = get_connection()
     cursor = connection.cursor()
 
-    cursor.execute("SELECT * FROM participants WHERE puuid = (?)", (puuid,))
+    cursor.execute("SELECT details FROM participants WHERE puuid = (?)", (puuid,))
 
     results = cursor.fetchall()
 
+    participant_list_temp = [participant[0] for participant in results]
+    
+    participant_list = []
+
+    for participant in participant_list_temp:
+        participant_list.append(json.loads(participant))
+
     connection.close()
     
-    return results
+    return participant_list
 
 
 def get_player_kills(puuid, match_id):

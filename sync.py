@@ -13,4 +13,7 @@ def add_participants_to_table(puuid, matches):
         
         save_participants(puuid, match_id, participant_json)
 
+def get_new_match_ids(api_match_ids, stored_match_ids):
+
+    return list((set(api_match_ids)&set(stored_match_ids))^set(api_match_ids))
 

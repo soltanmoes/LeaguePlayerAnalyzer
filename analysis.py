@@ -21,6 +21,7 @@ def calculate_win_rate(participant_list):
 
     return winrate
 
+
 def calculate_match_kda(participant_list):
     
     if not participant_list:
