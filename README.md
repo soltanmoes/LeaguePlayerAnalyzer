@@ -61,13 +61,13 @@ The application uses separate modules for API communication, player data process
 - [x] Calculate individual and overall KDA.
 - [x] Group matches by champion.
 - [x] Add initial unit tests.
-- [ ] Complete error handling for invalid accounts and API rate limits.
-- [ ] Add champion-specific performance summaries.
+- [x] Complete error handling for invalid accounts and API rate limits.
+- [x] Add champion-specific performance summaries.
 
 ### Phase 2 — Data Storage and Visualization
 
-- [ ] Implement a SQLite database.
-- [ ] Store match history to reduce repeated API requests.
+- [x] Implement a SQLite database.
+- [x] Store match history to reduce repeated API requests.
 - [ ] Add additional gameplay statistics.
 - [ ] Create an interactive player dashboard.
 - [ ] Visualize win rates, KDA trends, and champion performance.
