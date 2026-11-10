@@ -1,28 +1,12 @@
 from analysis import calculate_win_rate, calculate_overall_kda
-from matches import get_matches, fetch_match_ids, get_player_in_participants
+from matches import get_matches, fetch_match_ids
 from player import get_riot_id, get_puuid
-from database import create_database, save_matches, get_stored_match_ids, save_participants, get_stored_participants
-import json
-
+from database import *
+from sync import add_participants_to_table
 
 def get_new_match_ids(api_match_ids, stored_match_ids):
 
     return list((set(api_match_ids)&set(stored_match_ids))^set(api_match_ids))
-
-
-def add_participants_to_table(puuid, matches):
-
-    participant_list = get_player_in_participants(puuid, matches)
-
-    for match in matches:
-
-        match_id = match["metadata"]["matchId"]
-
-        for participant in participant_list:
-
-            participant_json = json.dumps(participant, indent=4)
-            save_participants(puuid, match_id, participant_json)
-
 
 def main():
 
@@ -49,7 +33,12 @@ def main():
     
     print(f"{len(new_match_ids)} new matches downloaded\n")
 
-    print(participants_table)
+    for match_id in stored_match_ids:
+
+        kills = get_player_kills(puuid, match_id)
+        print(f"Kills: {kills}")
+
+
     
     print("==== PLAYER ANALYSIS ====")
     # winrate = calculate_win_rate(participant_list)

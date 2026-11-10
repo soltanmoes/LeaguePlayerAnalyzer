@@ -56,6 +56,7 @@ def save_participants(puuid, match_id, participant):
     connection.commit()
     connection.close()
 
+
 def get_stored_match_ids(puuid):
 
     connection = get_connection()
@@ -71,8 +72,9 @@ def get_stored_match_ids(puuid):
     
     return stored_match_ids
 
-def get_stored_participants(puuid):
 
+
+def get_stored_participants(puuid):
 
     connection = get_connection()
     cursor = connection.cursor()
@@ -85,3 +87,27 @@ def get_stored_participants(puuid):
     
     return results
 
+
+def get_player_kills(puuid, match_id):
+
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT json_extract(details, '$.kills') AS kills FROM participants WHERE puuid = (?) AND match_id = (?)", (puuid, match_id))
+
+    results = cursor.fetchall()
+
+    connection.close()
+    
+    return results[0][0]
+
+
+def drop_participants_table():
+
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("DROP TABLE IF EXISTS participants")
+
+    connection.commit()
+    connection.close()
