@@ -24,23 +24,26 @@ def main():
 
     new_match_ids = get_new_match_ids(api_match_ids, stored_match_ids)
     save_matches(puuid, riot_id, new_match_ids)
-    
-    stored_match_ids = get_stored_match_ids(puuid)
-    matches = get_matches(stored_match_ids)
 
+    matches = get_matches(new_match_ids)
     add_participants_to_table(puuid, matches)
-    participants_table = get_stored_participants(puuid)
+
+    stored_match_ids = get_stored_match_ids(puuid)
     
     print(f"{len(new_match_ids)} new matches downloaded\n")
 
+    print("==== PLAYER ANALYSIS ====")
+    
     for match_id in stored_match_ids:
 
+        champion = get_player_champ(puuid, match_id)
         kills = get_player_kills(puuid, match_id)
-        print(f"Kills: {kills}")
+        assists = get_player_assists(puuid, match_id)
+        deaths = get_player_deaths(puuid, match_id)
+        print(f"Champion: {champion} Kills: {kills} Assists: {assists} Deaths: {deaths}")
 
 
     
-    print("==== PLAYER ANALYSIS ====")
     # winrate = calculate_win_rate(participant_list)
     # overall_kda = calculate_overall_kda(participant_list)
 

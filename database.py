@@ -46,12 +46,12 @@ def save_matches(puuid, riot_id, match_ids):
     connection.close()
 
 # Champ: Ahri , Kills: 1 , Deaths: 10 , Assists: 3
-def save_participants(puuid, match_id, participant):
+def save_participants(puuid, match_id, details):
 
     connection = get_connection()
     cursor = connection.cursor()
 
-    cursor.execute("INSERT OR IGNORE INTO participants (puuid, match_id, details) VALUES (?, ?, ?)", (puuid, match_id, participant))
+    cursor.execute("INSERT OR IGNORE INTO participants (puuid, match_id, details) VALUES (?, ?, ?)", (puuid, match_id, details))
 
     connection.commit()
     connection.close()
@@ -94,6 +94,48 @@ def get_player_kills(puuid, match_id):
     cursor = connection.cursor()
 
     cursor.execute("SELECT json_extract(details, '$.kills') AS kills FROM participants WHERE puuid = (?) AND match_id = (?)", (puuid, match_id))
+
+    results = cursor.fetchall()
+
+    connection.close()
+    
+    return results[0][0]
+
+
+def get_player_assists(puuid, match_id):
+
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT json_extract(details, '$.assists') AS assists FROM participants WHERE puuid = (?) AND match_id = (?)", (puuid, match_id))
+
+    results = cursor.fetchall()
+
+    connection.close()
+    
+    return results[0][0]
+
+
+def get_player_deaths(puuid, match_id):
+
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT json_extract(details, '$.deaths') AS deaths FROM participants WHERE puuid = (?) AND match_id = (?)", (puuid, match_id))
+
+    results = cursor.fetchall()
+
+    connection.close()
+    
+    return results[0][0]
+
+
+def get_player_champ(puuid, match_id):
+
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT json_extract(details, '$.championName') AS champion FROM participants WHERE puuid = (?) AND match_id = (?)", (puuid, match_id))
 
     results = cursor.fetchall()
 
